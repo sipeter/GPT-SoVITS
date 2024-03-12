@@ -12,4 +12,5 @@ SoVITS_weights
 TEMP
 ffmpeg.exe
 ffprobe.exe
-
+trained
+tmp_audio
