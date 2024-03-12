@@ -390,7 +390,7 @@ with gr.Blocks(title="GPT-SoVITS WebUI") as app:
                 with gr.Row():
                     split_bucket = gr.Checkbox(label=i18n("数据分桶(可能会降低一点计算量，选就对了)"), value=True, interactive=True, show_label=True)
             # with gr.Column():
-                output = gr.Audio(label=i18n("输出的语音"))
+                output = gr.Audio(label=i18n("输出的语音"),show_download_button=True)
                 with gr.Row():
                     inference_button = gr.Button(i18n("合成语音"), variant="primary")
                     stop_infer = gr.Button(i18n("终止合成"), variant="primary")
@@ -450,15 +450,15 @@ with gr.Blocks(title="GPT-SoVITS WebUI") as app:
                     for _ in range(5):
                         with gr.Group():
                             history_checkbox.append(gr.Checkbox(interactive=True,show_label=False,label=""))
-                            history_audio.append(gr.Audio(label=""))
+                            history_audio.append(gr.Audio(label="",show_download_button=True))
 
             shown_audio_num.change(shown_audio_num_change,[shown_audio_num],[*history_checkbox,*history_audio])
             add_history_button.click(add_to_history,[output,text],[*history_checkbox,*history_audio])
             merge_audio_button.click(merge_selected_history,[*history_checkbox],[*history_checkbox,*history_audio])
             delete_select_history_button.click(delete_selected_history,[*history_checkbox],[*history_checkbox,*history_audio])
             clear_history_button.click(clear_history,outputs=[*history_checkbox,*history_audio])
-            
-            # 输出音频历史记录 -- 结束--
+
+        # 输出音频历史记录 -- 结束--
 
 app.queue().launch(
     server_name="0.0.0.0",
