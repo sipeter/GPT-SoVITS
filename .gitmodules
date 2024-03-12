@@ -1,0 +1,4 @@
+[submodule "TTS-for-GPT-soVITS"]
+	path = TTS-for-GPT-soVITS
+	url = https://github.com/sipeter/TTS-for-GPT-soVITS.git
+	branch = plug_in_dev
