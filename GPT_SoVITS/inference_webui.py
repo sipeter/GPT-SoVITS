@@ -175,11 +175,14 @@ def init_wav_list(sovits_path):
     # 读取文本
     text = ""
     try:
-        with open(rf'./logs/{result}/2-name2text.txt', 'r', encoding='utf-8') as f:
+       with open(rf'./logs/{result}/2-name2text.txt', 'r', encoding='utf-8') as f:
             text = f.read()
     except FileNotFoundError:
         print("无参考音频")
         return ["无参考音频"], {}
+    with open(rf'./logs/{result}/2-name2text.txt', 'r', encoding='utf-8') as f:
+        text = f.read()
+
 
     # 遍历目录
     # 增加计数功能，使得每次显示的音频不超过50个，防止页面卡顿   
@@ -310,6 +313,7 @@ def change_sovits_weights(sovits_path):
     global reference_wavs,reference_dict
     reference_wavs,reference_dict = init_wav_list(sovits_path)
 
+
     return gr.update(choices=reference_wavs)
 
 # 添加根据模型路径切换参考音频功能--结束--
@@ -333,12 +337,15 @@ with gr.Blocks(title="GPT-SoVITS WebUI") as app:
 
             refresh_button = gr.Button(i18n("刷新模型路径"), variant="primary")
             refresh_button.click(fn=change_choices, inputs=[], outputs=[SoVITS_dropdown, GPT_dropdown])
+            
             # 增加wavs_dropdown部分，选择模型后，自动切换参考音频    
             SoVITS_dropdown.change(change_sovits_weights,[SoVITS_dropdown],[wavs_dropdown]).then(
 
-                    tts_pipline.init_t2s_weights, [GPT_dropdown], []
+                    tts_pipline.init_vits_weights, [SoVITS_dropdown], []
 
                 )
+
+            GPT_dropdown.change(tts_pipline.init_t2s_weights, [GPT_dropdown], [])
     
     with gr.Row():
         with gr.Column():
