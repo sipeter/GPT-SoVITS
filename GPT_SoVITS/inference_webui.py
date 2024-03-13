@@ -262,13 +262,14 @@ def add_to_history(audio,input_text):
     return [*sync_output_history_to_checkbox_audio()]
 
 def clear_history():
-    output_history = []
+    global output_history  # 声明 output_history 是全局变量
+    output_history = []  # 清空历史记录列表
     checkbox_result = []
     audio_result = []
     for _ in range(history_max_num):
-        checkbox_result.append(gr.update(label="",value=False))
-        audio_result.append(gr.update(value = None))
-    return [*checkbox_result,*audio_result]
+        checkbox_result.append(gr.update(label="", value=False))
+        audio_result.append(gr.update(value=None))
+    return [*checkbox_result, *audio_result]
 
 def shown_audio_num_change(audio_num):
     audio_num = int(audio_num)
