@@ -122,7 +122,7 @@ def inference(text, text_lang,
 
     end_time = time.time()  # 记录结束时间
     elapsed_time = end_time - start_time  # 计算经过的时间
-    print(f"推理 executed in {elapsed_time:.2f} seconds")  # 输出执行时间，保留2位小数  
+    print(f"推理 耗时 {elapsed_time:.2f} 秒")  # 输出执行时间，保留2位小数  
         
 def custom_sort_key(s):
     # 使用正则表达式提取字符串中的数字部分和非数字部分
@@ -420,28 +420,28 @@ with gr.Blocks(title="GPT-SoVITS WebUI") as app:
         )
         stop_infer.click(tts_pipline.stop, [], [])
 
-    # with gr.Group():
-    #     gr.Markdown(value=i18n("文本切分工具。太长的文本合成出来效果不一定好，所以太长建议先切。合成会根据文本的换行分开合成再拼起来。"))
-    #     with gr.Row():
-    #         text_inp = gr.Textbox(label=i18n("需要合成的切分前文本"), value="", lines=4)
-    #         with gr.Column():
-    #             _how_to_cut = gr.Radio(
-    #                         label=i18n("怎么切"),
-    #                         choices=[i18n("不切"), i18n("凑四句一切"), i18n("凑50字一切"), i18n("按中文句号。切"), i18n("按英文句号.切"), i18n("按标点符号切"), ],
-    #                         value=i18n("凑四句一切"),
-    #                         interactive=True,
-    #                     )
-    #             cut_text= gr.Button(i18n("切分"), variant="primary")
+    with gr.Group():
+        gr.Markdown(value=i18n("文本切分工具。太长的文本合成出来效果不一定好，所以太长建议先切。合成会根据文本的换行分开合成再拼起来。"))
+        with gr.Row():
+            text_inp = gr.Textbox(label=i18n("需要合成的切分前文本"), value="", lines=4)
+            with gr.Column():
+                _how_to_cut = gr.Radio(
+                            label=i18n("怎么切"),
+                            choices=[i18n("不切"), i18n("凑四句一切"), i18n("凑50字一切"), i18n("按中文句号。切"), i18n("按英文句号.切"), i18n("按标点符号切"), ],
+                            value=i18n("凑四句一切"),
+                            interactive=True,
+                        )
+                cut_text= gr.Button(i18n("切分"), variant="primary")
             
-    #         def to_cut(text_inp, how_to_cut):
-    #             if len(text_inp.strip()) == 0 or text_inp==[]:
-    #                 return ""
-    #             method = get_method(cut_method[how_to_cut])
-    #             return method(text_inp)
+            def to_cut(text_inp, how_to_cut):
+                if len(text_inp.strip()) == 0 or text_inp==[]:
+                    return ""
+                method = get_method(cut_method[how_to_cut])
+                return method(text_inp)
         
-    #         text_opt = gr.Textbox(label=i18n("切分后文本"), value="", lines=4)
-    #         cut_text.click(to_cut, [text_inp, _how_to_cut], [text_opt])
-    #     gr.Markdown(value=i18n("后续将支持转音素、手工修改音素、语音合成分步执行。"))
+            text_opt = gr.Textbox(label=i18n("切分后文本"), value="", lines=4)
+            cut_text.click(to_cut, [text_inp, _how_to_cut], [text_opt])
+        gr.Markdown(value=i18n("后续将支持转音素、手工修改音素、语音合成分步执行。"))
 
         # 输出音频历史记录 -- 开始--
         history_audio = []
